@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ASSETS } from "@/lib/assets/catalog";
 import { loadAssetSummary } from "@/lib/insight/asset";
 import { AssetSignalCard } from "@/components/signal/AssetSignalCard";
+import { WhatChanged, type AssetSnapshot } from "@/components/signal/WhatChanged";
 
 // Live signal reads on every request; nothing here is statically cached.
 export const dynamic = "force-dynamic";
@@ -15,9 +16,17 @@ const STATS = [
 
 export default async function Home() {
   const summaries = await Promise.all(ASSETS.map((asset) => loadAssetSummary(asset)));
+  const snapshot: AssetSnapshot[] = summaries.map((s) => ({
+    assetId: s.asset.id,
+    symbol: s.asset.symbol,
+    multiplier: s.flow.state === "ok" ? s.flow.signal.multiplier : null,
+    stance: s.flow.state === "ok" ? s.flow.signal.stance : null,
+    price: s.price,
+  }));
 
   return (
     <div className="flex flex-col gap-14">
+      <WhatChanged current={snapshot} />
       <section className="pt-4">
         <span className="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-micro font-semibold uppercase tracking-wide text-accent">
           Flow-driven DCA

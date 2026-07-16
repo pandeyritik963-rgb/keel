@@ -5,3 +5,4 @@ export * from "./types";
 export * from "./signal";
 export * from "./plan";
 export * from "./backtest";
+export * from "./schedule";

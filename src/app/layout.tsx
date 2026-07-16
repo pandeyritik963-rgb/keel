@@ -3,6 +3,7 @@ import { Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/shell/Header";
 import { Footer } from "@/components/shell/Footer";
+import { Providers } from "@/components/wallet/Providers";
 
 // Manrope for text/headings, JetBrains Mono for every number (tabular, slashed-zero).
 const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"] });
@@ -23,9 +24,11 @@ export default function RootLayout({
       className={`${manrope.variable} ${jbMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <Header />
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
-        <Footer />
+        <Providers>
+          <Header />
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
