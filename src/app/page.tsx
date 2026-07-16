@@ -1,65 +1,73 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ASSETS } from "@/lib/assets/catalog";
+import { loadAssetSummary } from "@/lib/insight/asset";
+import { AssetSignalCard } from "@/components/signal/AssetSignalCard";
 
-export default function Home() {
+// Live signal reads on every request; nothing here is statically cached.
+export const dynamic = "force-dynamic";
+
+const STATS = [
+  { value: String(ASSETS.length), label: "assets, sized by institutional flow" },
+  { value: "Mainnet", label: "real SoDEX prices + SoSoValue flows" },
+  { value: "No wallet", label: "the signal is free to read" },
+  { value: "Zero", label: "mock numbers — every figure is live or tested" },
+];
+
+export default async function Home() {
+  const summaries = await Promise.all(ASSETS.map((asset) => loadAssetSummary(asset)));
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex flex-col gap-14">
+      <section className="pt-4">
+        <span className="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-micro font-semibold uppercase tracking-wide text-accent">
+          Flow-driven DCA
+        </span>
+        <h1 className="mt-4 max-w-3xl text-display font-extrabold tracking-tight text-foreground">
+          Stack through the storm.
+        </h1>
+        <p className="mt-4 max-w-2xl text-lead text-muted">
+          Keel dollar-cost-averages into BTC and ETH, but sizes each buy from live SoSoValue
+          institutional ETF flows — accumulating more when the market fears, less when it is greedy.
+          You sign every buy. Keel never holds your keys.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="#signal"
+            className="inline-flex h-9 items-center rounded-full bg-accent px-5 text-body font-semibold text-on-accent transition-colors hover:bg-accent-strong"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            See today&apos;s signal
+          </Link>
+          <Link
+            href={`/assets/${ASSETS[0].id}`}
+            className="inline-flex h-9 items-center rounded-full border border-border-strong bg-surface px-5 text-body font-semibold text-foreground transition-colors hover:bg-ink-100"
           >
-            Documentation
-          </a>
+            How a plan works
+          </Link>
         </div>
-      </main>
+      </section>
+
+      <section className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-4">
+        {STATS.map((s) => (
+          <div key={s.label} className="bg-surface p-4">
+            <p className="text-stat font-mono font-semibold text-foreground">{s.value}</p>
+            <p className="mt-1 text-micro text-muted">{s.label}</p>
+          </div>
+        ))}
+      </section>
+
+      <section id="signal" className="scroll-mt-20">
+        <h2 className="text-lead font-semibold text-foreground">Today&apos;s buy signal</h2>
+        <p className="mt-1 max-w-2xl text-body text-muted">
+          Each asset&apos;s multiplier is computed from its recent SoSoValue ETF flows under the
+          contrarian thesis. Open an asset to see the factor breakdown, the backtest against naive
+          DCA, and to start a plan.
+        </p>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          {summaries.map((summary) => (
+            <AssetSignalCard key={summary.asset.id} summary={summary} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
