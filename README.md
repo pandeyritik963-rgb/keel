@@ -1,5 +1,7 @@
 # Keel
 
+Live: https://keel-self-six.vercel.app
+
 Flow-driven smart DCA. Keel accumulates BTC and ETH on a schedule, but sizes each buy from
 live SoSoValue institutional ETF flows: under the default contrarian thesis it buys more on
 outflow days and less on inflow days (momentum inverts this, per plan). SoSoValue is the
