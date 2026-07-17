@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="260" viewBox="0 0 1200 260" role="img" aria-label="Keel — flow-driven smart DCA">
+  <rect width="1200" height="260" fill="#0b0e11"/>
+  <rect x="0" y="0" width="1200" height="260" fill="none" stroke="#262c31" stroke-width="2"/>
+  <!-- keel mark: waterline + hull curve -->
+  <g transform="translate(80,58)">
+    <path d="M0 52 L144 52" stroke="#f7f8f9" stroke-width="13" stroke-linecap="round"/>
+    <path d="M18 60 Q72 142 126 60" stroke="#86b8c6" stroke-width="13" stroke-linecap="round" fill="none"/>
+  </g>
+  <!-- wordmark + tagline -->
+  <g font-family="Manrope, 'Segoe UI', ui-sans-serif, system-ui, sans-serif">
+    <text x="272" y="128" font-size="72" font-weight="800" letter-spacing="-2" fill="#f7f8f9">Keel</text>
+    <text x="276" y="172" font-size="21" font-weight="600" fill="#d4dade">Stack through the storm.</text>
+    <text x="276" y="202" font-size="16" fill="#8a949c">Flow-driven smart DCA — every buy sized by live institutional ETF flows, signed by you.</text>
+  </g>
+  <!-- provenance strip motif -->
+  <g font-family="'JetBrains Mono', ui-monospace, Consolas, monospace" font-size="13" fill="#8a949c">
+    <circle cx="906" cy="120" r="4" fill="#2fa470"/>
+    <text x="920" y="125">data: SoDEX mainnet</text>
+    <circle cx="906" cy="150" r="4" fill="#c99b2e"/>
+    <text x="920" y="155">execution: testnet sandbox</text>
+    <circle cx="906" cy="180" r="4" fill="#86b8c6"/>
+    <text x="920" y="185">signal: SoSoValue ETF flows</text>
+  </g>
+</svg>

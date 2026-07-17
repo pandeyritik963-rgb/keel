@@ -36,6 +36,15 @@ change.
 | "Plans and buy history are stored in this browser only" (plans page, plan form) | `localStorage` keys `keel.plans.v1` / `keel.buys.v1`; no server persistence of plans exists. | A server-side plan store is added. |
 | "Keel has no server account" (plans page) | There is no auth, no database, no user table. | Accounts are introduced. |
 
+## README
+
+| Claim (where) | Basis | Breaks if |
+| --- | --- | --- |
+| Worked example "BTC +$181.08M → 0.92x steady; ETH +$58.34M → 0.78x ease off, 2026-07-16" (README, How the signal works) | Observed output of `computeSignal` against live SoSoValue data in a dev run on that date; consistent with the documented mapping (0.92x ⇒ score +0.16 = low conviction, 0.78x ⇒ +0.44 = moderate). | The default config's weights/clamps change, making the cited mapping impossible — update the example in the same change. |
+| "35 unit tests" (README, Testing and CI) | `vitest run` at the time of writing. | The suite grows or shrinks; refresh the number when touching that section. CI badge is the live source of truth. |
+| Comparison table row "Typical AI trading bots — opaque model output, often custodial" (README, Why Keel) | Describes the category generically; no competitor is named. | — |
+| "The production build must pass with zero API keys" (README, Honesty as a feature) | `.github/workflows/ci.yml` runs `npm run build` with no secrets configured. | Keys are added to CI or the build starts requiring them. |
+
 ## Legal-adjacent
 
 | Claim (where) | Basis |
