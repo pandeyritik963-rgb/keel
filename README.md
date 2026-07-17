@@ -6,6 +6,8 @@ outflow days and less on inflow days (momentum inverts this, per plan). SoSoValu
 brain; SoDEX is the hands. Market data is mainnet-real; execution is non-custodial and
 sandboxed on the SoDEX testnet.
 
+![Keel home board: live SoDEX prices, what-changed strip, per-asset buy signal](docs/demo/home-board.png)
+
 ## What works today
 
 - Signal board (`/`): per-asset buy multiplier computed from `GET /etfs/summary-history`
@@ -25,6 +27,10 @@ sandboxed on the SoDEX testnet.
 Every financial number is computed in a framework-free, unit-tested core
 (`src/lib/core`) and carries unit, timeframe, and provenance in the UI. If an upstream is
 down or unconfigured, the surface says so — there is no mock data anywhere.
+
+More surfaces: [asset detail with factor breakdown and the naive-DCA replay](docs/demo/asset-detail.png)
+· [the pre-trade confirmation](docs/demo/buy-confirmation.png). Screenshots are from a live
+run; signal panels show their explicit offline state when no SoSoValue key is configured.
 
 ## Run it
 
