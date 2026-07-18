@@ -100,6 +100,11 @@ export function BuyDialog({ plan, signal, onClose }: { plan: Plan; signal: Signa
       `Your ${signal.execution.network} ${quoteCoin} balance (${formatUsd(quoteBalance)}) is below the buy size. The gateway would reject the order.`,
     );
   }
+  if (account.data && account.data.accountId === 0) {
+    blockers.push(
+      `This wallet has no provisioned SoDEX ${signal.execution.network} account — the write path is whitelist-gated and the gateway will reject the order. You can still proceed to see the full signing flow.`,
+    );
+  }
   const hardBlocked = blockers.some((b) => !b.includes("You can still proceed"));
 
   const submit = useCallback(async () => {
@@ -320,8 +325,12 @@ export function BuyDialog({ plan, signal, onClose }: { plan: Plan; signal: Signa
         {phase === "rejected" && (
           <div className="flex flex-col gap-3">
             <ErrorState
-              message={`Gateway rejected the order (HTTP ${gateway?.gatewayStatus})`}
-              detail={`${JSON.stringify(gateway?.body).slice(0, 300)} — nothing was recorded. Common causes on testnet: wallet not whitelisted or insufficient ${quoteCoin}.`}
+              message="Gateway rejected the order"
+              detail={`${
+                gateway?.body && typeof gateway.body === "object" && "error" in gateway.body
+                  ? String((gateway.body as { error: unknown }).error)
+                  : JSON.stringify(gateway?.body).slice(0, 200)
+              } — nothing was recorded. Common causes on testnet: wallet not whitelisted or insufficient ${quoteCoin}.`}
             />
             <div className="flex gap-2">
               <Button variant="secondary" onClick={onClose}>

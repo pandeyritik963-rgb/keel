@@ -80,8 +80,12 @@ export async function POST(req: Request) {
 
   try {
     const result = await sendSpotOrder(submission);
+    // The gateway wraps rejections in HTTP 200 with a { code != 0, error } envelope,
+    // so HTTP success alone must never count as acceptance.
+    const envelope = result.body as { code?: unknown; error?: unknown } | null;
+    const envelopeCode = envelope && typeof envelope === "object" && "code" in envelope ? Number(envelope.code) : 0;
     return Response.json(
-      { network, gatewayStatus: result.status, accepted: result.ok, body: result.body },
+      { network, gatewayStatus: result.status, accepted: result.ok && envelopeCode === 0, body: result.body },
       { status: 200 },
     );
   } catch (err) {
